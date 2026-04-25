@@ -9,6 +9,15 @@ Backend-first project for adaptive English learning focused on testing quality.
 - Health endpoint.
 - Integration tests with real PostgreSQL in Docker (`Testcontainers` + `Respawn`).
 
+## Development Workflow
+
+- `main` is the integration branch.
+- New work should happen in feature branches and be merged through pull requests.
+- GitHub issues are the unit of planned work.
+- CI validates pushes to `main` and pull requests targeting `main`.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the branch naming convention and PR flow.
+
 ## Run API
 
 ```bash
@@ -33,4 +42,3 @@ tests/
   EnglishSeedEngine.UnitTests/
   EnglishSeedEngine.IntegrationTests/
 ```
-
