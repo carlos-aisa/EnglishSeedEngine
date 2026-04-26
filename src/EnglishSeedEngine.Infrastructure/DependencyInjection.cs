@@ -25,6 +25,7 @@ public static class DependencyInjection
 
         services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
         services.AddScoped<IStudentRepository, StudentRepository>();
+        services.AddScoped<IStudentProgressRepository, StudentProgressRepository>();
         services.AddScoped<ILearningPlanRepository, LearningPlanRepository>();
         services.AddScoped<ILessonRepository, LessonRepository>();
         services.AddScoped<IParentFeedbackRepository, ParentFeedbackRepository>();

@@ -9,10 +9,14 @@ namespace EnglishSeedEngine.Api.Controllers;
 public sealed class StudentsController : ControllerBase
 {
     private readonly IStudentService _studentService;
+    private readonly IStudentProgressService _studentProgressService;
 
-    public StudentsController(IStudentService studentService)
+    public StudentsController(
+        IStudentService studentService,
+        IStudentProgressService studentProgressService)
     {
         _studentService = studentService;
+        _studentProgressService = studentProgressService;
     }
 
     [HttpPost]
@@ -92,6 +96,18 @@ public sealed class StudentsController : ControllerBase
         return Ok(ToLevelResponse(student));
     }
 
+    [HttpGet("{id:guid}/progress/overview")]
+    public async Task<IActionResult> GetStudentProgressOverview([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        var overview = await _studentProgressService.GetOverviewAsync(id, cancellationToken);
+        if (overview is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(ToProgressOverviewResponse(overview));
+    }
+
     private static StudentResponse ToResponse(Domain.Students.Student student)
     {
         return new StudentResponse(
@@ -112,6 +128,17 @@ public sealed class StudentsController : ControllerBase
             student.InitialAssessmentScorePercentage!.Value,
             student.InitialAssessmentLevel!,
             student.InitialAssessmentCompletedAtUtc!.Value);
+    }
+
+    private static StudentProgressOverviewResponse ToProgressOverviewResponse(StudentProgressOverview overview)
+    {
+        return new StudentProgressOverviewResponse(
+            overview.StudentId,
+            overview.CurrentLevel,
+            overview.CompletedSessions,
+            overview.LastFiveAverageScore,
+            overview.RecommendedFocus,
+            overview.HasSessions);
     }
 
     private static class RouteNames

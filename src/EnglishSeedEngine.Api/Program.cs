@@ -20,6 +20,7 @@ builder.Services.AddScoped<IParentFeedbackService, ParentFeedbackService>();
 builder.Services.AddScoped<ILessonService, LessonService>();
 builder.Services.AddScoped<IPracticeSessionService, PracticeSessionService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IStudentProgressService, StudentProgressService>();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
