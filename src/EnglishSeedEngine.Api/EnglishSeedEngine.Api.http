@@ -35,6 +35,11 @@ Accept: application/json
 
 ###
 
+GET {{EnglishSeedEngine.Api_HostAddress}}/students/{{studentId}}/progress/overview
+Accept: application/json
+
+###
+
 POST {{EnglishSeedEngine.Api_HostAddress}}/students/{{studentId}}/learning-plans
 
 ###
