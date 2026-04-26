@@ -9,4 +9,6 @@ public interface ILessonRepository
     Task<Lesson?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     Task<int> CountByLearningPlanIdAsync(Guid learningPlanId, CancellationToken cancellationToken);
+
+    Task<Lesson?> GetLatestByLearningPlanIdAsync(Guid learningPlanId, CancellationToken cancellationToken);
 }

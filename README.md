@@ -11,6 +11,7 @@ Backend-first project for adaptive English learning focused on testing quality.
 - Next lesson generation and lesson retrieval endpoints.
 - Lesson materials generation (versioned) and retrieval endpoints.
 - Practice session lifecycle with scoring and weak points endpoints.
+- Parent feedback endpoint to tune next lesson difficulty.
 - Health endpoint.
 - Integration tests with real PostgreSQL in Docker (`Testcontainers` + `Respawn`).
 

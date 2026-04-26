@@ -27,6 +27,7 @@ public static class DependencyInjection
         services.AddScoped<IStudentRepository, StudentRepository>();
         services.AddScoped<ILearningPlanRepository, LearningPlanRepository>();
         services.AddScoped<ILessonRepository, LessonRepository>();
+        services.AddScoped<IParentFeedbackRepository, ParentFeedbackRepository>();
         services.AddScoped<ILessonMaterialRepository, LessonMaterialRepository>();
         services.AddScoped<ILessonMaterialGenerator, TemplateLessonMaterialGenerator>();
         services.AddScoped<IPracticeSessionRepository, PracticeSessionRepository>();
