@@ -53,6 +53,15 @@ Accept: application/json
 
 ###
 
+POST {{EnglishSeedEngine.Api_HostAddress}}/lessons/{{lessonId}}/parent-feedback
+Content-Type: application/json
+
+{
+  "rating": "adequate"
+}
+
+###
+
 POST {{EnglishSeedEngine.Api_HostAddress}}/lessons/{{lessonId}}/materials:generate
 
 ###

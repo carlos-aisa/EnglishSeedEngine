@@ -21,6 +21,8 @@ public sealed class AppDbContext : DbContext
 
     public DbSet<LessonMaterial> LessonMaterials => Set<LessonMaterial>();
 
+    public DbSet<ParentFeedback> ParentFeedbacks => Set<ParentFeedback>();
+
     public DbSet<PracticeSession> PracticeSessions => Set<PracticeSession>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -79,6 +81,15 @@ public sealed class AppDbContext : DbContext
         lessonMaterial.Property(x => x.GeneratedAtUtc).IsRequired();
         lessonMaterial.HasIndex(x => x.LessonId);
         lessonMaterial.HasIndex(x => new { x.LessonId, x.Version }).IsUnique();
+
+        var parentFeedback = modelBuilder.Entity<ParentFeedback>();
+        parentFeedback.ToTable("parent_feedbacks");
+        parentFeedback.HasKey(x => x.Id);
+        parentFeedback.Property(x => x.LessonId).IsRequired();
+        parentFeedback.Property(x => x.Rating).HasMaxLength(24).IsRequired();
+        parentFeedback.Property(x => x.DifficultyDelta).IsRequired();
+        parentFeedback.Property(x => x.SubmittedAtUtc).IsRequired();
+        parentFeedback.HasIndex(x => x.LessonId);
 
         var practiceSession = modelBuilder.Entity<PracticeSession>();
         practiceSession.ToTable("practice_sessions");

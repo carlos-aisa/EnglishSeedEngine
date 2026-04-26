@@ -32,4 +32,14 @@ public sealed class LessonRepository : ILessonRepository
             .AsNoTracking()
             .CountAsync(x => x.LearningPlanId == learningPlanId, cancellationToken);
     }
+
+    public Task<Lesson?> GetLatestByLearningPlanIdAsync(Guid learningPlanId, CancellationToken cancellationToken)
+    {
+        return _dbContext.Lessons
+            .AsNoTracking()
+            .Where(x => x.LearningPlanId == learningPlanId)
+            .OrderByDescending(x => x.WeekNumber)
+            .ThenByDescending(x => x.CreatedAtUtc)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
 }

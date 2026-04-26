@@ -16,6 +16,7 @@ builder.Services.AddHealthChecks();
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<ILearningPlanService, LearningPlanService>();
 builder.Services.AddScoped<ILessonMaterialService, LessonMaterialService>();
+builder.Services.AddScoped<IParentFeedbackService, ParentFeedbackService>();
 builder.Services.AddScoped<ILessonService, LessonService>();
 builder.Services.AddScoped<IPracticeSessionService, PracticeSessionService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
