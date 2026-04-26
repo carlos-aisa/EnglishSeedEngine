@@ -39,5 +39,29 @@ public sealed class StudentService : IStudentService
     {
         return _studentRepository.GetByIdAsync(id, cancellationToken);
     }
-}
 
+    public async Task<Student?> SubmitInitialAssessmentAsync(
+        Guid studentId,
+        SubmitInitialAssessmentInput input,
+        CancellationToken cancellationToken)
+    {
+        var student = await _studentRepository.GetByIdAsync(studentId, cancellationToken);
+
+        if (student is null)
+        {
+            return null;
+        }
+
+        var level = InitialAssessmentScoring.DetermineLevel(input.CorrectAnswers, input.TotalQuestions);
+
+        student.RecordInitialAssessment(
+            input.CorrectAnswers,
+            input.TotalQuestions,
+            level,
+            _timeProvider.GetUtcNow().UtcDateTime);
+
+        await _studentRepository.UpdateAsync(student, cancellationToken);
+
+        return student;
+    }
+}

@@ -6,6 +6,7 @@ Backend-first project for adaptive English learning focused on testing quality.
 
 - Modular monolith structure (`Domain`, `Application`, `Infrastructure`, `Api`).
 - Student registration API.
+- Initial assessment and CEFR approximation endpoints.
 - Health endpoint.
 - Integration tests with real PostgreSQL in Docker (`Testcontainers` + `Respawn`).
 

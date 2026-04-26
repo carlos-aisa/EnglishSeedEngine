@@ -8,6 +8,7 @@ public interface IStudentRepository
 
     Task<Student?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
+    Task UpdateAsync(Student student, CancellationToken cancellationToken);
+
     Task<bool> TutorEmailExistsAsync(string tutorEmail, CancellationToken cancellationToken);
 }
-

@@ -23,7 +23,7 @@ public sealed class AppDbContext : DbContext
         student.Property(x => x.TutorEmail).HasMaxLength(256).IsRequired();
         student.Property(x => x.TargetLevel).HasMaxLength(8).IsRequired();
         student.Property(x => x.CreatedAtUtc).IsRequired();
+        student.Property(x => x.InitialAssessmentLevel).HasMaxLength(8);
         student.HasIndex(x => x.TutorEmail).IsUnique();
     }
 }
-

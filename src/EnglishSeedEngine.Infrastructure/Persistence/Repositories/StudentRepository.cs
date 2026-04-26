@@ -26,6 +26,12 @@ public sealed class StudentRepository : IStudentRepository
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
+    public async Task UpdateAsync(Student student, CancellationToken cancellationToken)
+    {
+        _dbContext.Students.Update(student);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
     public Task<bool> TutorEmailExistsAsync(string tutorEmail, CancellationToken cancellationToken)
     {
         return _dbContext.Students
@@ -33,4 +39,3 @@ public sealed class StudentRepository : IStudentRepository
             .AnyAsync(x => x.TutorEmail == tutorEmail, cancellationToken);
     }
 }
-
