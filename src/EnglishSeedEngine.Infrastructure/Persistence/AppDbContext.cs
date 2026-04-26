@@ -18,6 +18,8 @@ public sealed class AppDbContext : DbContext
 
     public DbSet<Lesson> Lessons => Set<Lesson>();
 
+    public DbSet<LessonMaterial> LessonMaterials => Set<LessonMaterial>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         var student = modelBuilder.Entity<Student>();
@@ -62,5 +64,17 @@ public sealed class AppDbContext : DbContext
         lesson.Property(x => x.Status).HasMaxLength(24).IsRequired();
         lesson.Property(x => x.CreatedAtUtc).IsRequired();
         lesson.HasIndex(x => x.LearningPlanId);
+
+        var lessonMaterial = modelBuilder.Entity<LessonMaterial>();
+        lessonMaterial.ToTable("lesson_materials");
+        lessonMaterial.HasKey(x => x.Id);
+        lessonMaterial.Property(x => x.LessonId).IsRequired();
+        lessonMaterial.Property(x => x.Version).IsRequired();
+        lessonMaterial.Property(x => x.VocabularyJson).HasColumnType("jsonb").IsRequired();
+        lessonMaterial.Property(x => x.PhrasesJson).HasColumnType("jsonb").IsRequired();
+        lessonMaterial.Property(x => x.ExercisesJson).HasColumnType("jsonb").IsRequired();
+        lessonMaterial.Property(x => x.GeneratedAtUtc).IsRequired();
+        lessonMaterial.HasIndex(x => x.LessonId);
+        lessonMaterial.HasIndex(x => new { x.LessonId, x.Version }).IsUnique();
     }
 }
