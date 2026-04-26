@@ -13,6 +13,7 @@ Backend-first project for adaptive English learning focused on testing quality.
 - Practice session lifecycle with scoring and weak points endpoints.
 - Parent feedback endpoint to tune next lesson difficulty.
 - Student progress overview endpoint with aggregated metrics.
+- Dockerized local environment with API + PostgreSQL via `docker compose`.
 - Health endpoint.
 - Integration tests with real PostgreSQL in Docker (`Testcontainers` + `Respawn`).
 
@@ -30,6 +31,28 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the branch naming convention and PR f
 
 ```bash
 dotnet run --project src/EnglishSeedEngine.Api
+```
+
+## Run With Docker Compose
+
+```bash
+docker compose up --build
+```
+
+- API base URL: `http://localhost:8080`
+- Health endpoint: `http://localhost:8080/health`
+- PostgreSQL host from your machine: `localhost:5432`
+
+Stop and remove containers:
+
+```bash
+docker compose down
+```
+
+Stop and also remove PostgreSQL persisted volume:
+
+```bash
+docker compose down -v
 ```
 
 ## Run Tests
