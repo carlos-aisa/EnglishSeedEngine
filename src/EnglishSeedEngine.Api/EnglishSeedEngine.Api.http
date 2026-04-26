@@ -1,5 +1,6 @@
 @EnglishSeedEngine.Api_HostAddress = http://localhost:5042
 @studentId = 00000000-0000-0000-0000-000000000001
+@learningPlanId = 00000000-0000-0000-0000-000000000002
 
 GET {{EnglishSeedEngine.Api_HostAddress}}/health
 Accept: application/json
@@ -29,6 +30,15 @@ Content-Type: application/json
 ###
 
 GET {{EnglishSeedEngine.Api_HostAddress}}/students/{{studentId}}/level
+Accept: application/json
+
+###
+
+POST {{EnglishSeedEngine.Api_HostAddress}}/students/{{studentId}}/learning-plans
+
+###
+
+GET {{EnglishSeedEngine.Api_HostAddress}}/learning-plans/{{learningPlanId}}
 Accept: application/json
 
 ###

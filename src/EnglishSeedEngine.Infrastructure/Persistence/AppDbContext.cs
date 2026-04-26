@@ -1,3 +1,4 @@
+using EnglishSeedEngine.Domain.LearningPlans;
 using EnglishSeedEngine.Domain.Students;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,8 @@ public sealed class AppDbContext : DbContext
 
     public DbSet<Student> Students => Set<Student>();
 
+    public DbSet<LearningPlan> LearningPlans => Set<LearningPlan>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         var student = modelBuilder.Entity<Student>();
@@ -25,5 +28,25 @@ public sealed class AppDbContext : DbContext
         student.Property(x => x.CreatedAtUtc).IsRequired();
         student.Property(x => x.InitialAssessmentLevel).HasMaxLength(8);
         student.HasIndex(x => x.TutorEmail).IsUnique();
+
+        var learningPlan = modelBuilder.Entity<LearningPlan>();
+        learningPlan.ToTable("learning_plans");
+        learningPlan.HasKey(x => x.Id);
+        learningPlan.Property(x => x.StudentId).IsRequired();
+        learningPlan.Property(x => x.StartLevel).HasMaxLength(8).IsRequired();
+        learningPlan.Property(x => x.TargetLevel).HasMaxLength(8).IsRequired();
+        learningPlan.Property(x => x.Status).HasMaxLength(24).IsRequired();
+        learningPlan.Property(x => x.CreatedAtUtc).IsRequired();
+        learningPlan.HasIndex(x => x.StudentId);
+        learningPlan.HasMany(x => x.WeeklyGoals)
+            .WithOne()
+            .HasForeignKey(x => x.LearningPlanId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        var weeklyGoal = modelBuilder.Entity<LearningPlanWeeklyGoal>();
+        weeklyGoal.ToTable("learning_plan_weekly_goals");
+        weeklyGoal.HasKey(x => x.Id);
+        weeklyGoal.Property(x => x.WeekNumber).IsRequired();
+        weeklyGoal.Property(x => x.Goal).HasMaxLength(300).IsRequired();
     }
 }
