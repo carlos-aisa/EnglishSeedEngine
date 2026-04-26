@@ -1,4 +1,5 @@
 using EnglishSeedEngine.Application.LearningPlans;
+using EnglishSeedEngine.Application.Lessons;
 using EnglishSeedEngine.Application.Students;
 using EnglishSeedEngine.Infrastructure;
 using EnglishSeedEngine.Infrastructure.Persistence;
@@ -12,6 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<ILearningPlanService, LearningPlanService>();
+builder.Services.AddScoped<ILessonService, LessonService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddInfrastructure(builder.Configuration);
 

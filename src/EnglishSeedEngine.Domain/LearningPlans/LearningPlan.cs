@@ -21,6 +21,9 @@ public sealed class LearningPlan
         CreatedAtUtc = createdAtUtc;
     }
 
+    private const string ActiveStatus = "Active";
+    private const string CompletedStatus = "Completed";
+
     public Guid Id { get; private set; }
 
     public Guid StudentId { get; private set; }
@@ -71,6 +74,40 @@ public sealed class LearningPlan
         plan.WeeklyGoals = BuildWeeklyGoals(planId, normalizedStartLevel, normalizedTargetLevel);
 
         return plan;
+    }
+
+    public NextLessonDraft GetNextLessonDraft(int existingLessonsCount)
+    {
+        if (existingLessonsCount < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(existingLessonsCount), "Existing lessons count cannot be negative.");
+        }
+
+        if (Status == CompletedStatus || existingLessonsCount >= WeeklyGoals.Count)
+        {
+            throw new InvalidOperationException("Learning plan is completed.");
+        }
+
+        var nextWeekNumber = existingLessonsCount + 1;
+        var nextWeeklyGoal = WeeklyGoals.Single(x => x.WeekNumber == nextWeekNumber);
+        var targetDifficulty = nextWeekNumber switch
+        {
+            1 => "Easy",
+            2 => "Medium",
+            3 => "Medium",
+            4 => "Hard",
+            _ => "Hard"
+        };
+
+        return new NextLessonDraft(
+            nextWeekNumber,
+            nextWeeklyGoal.Goal,
+            targetDifficulty);
+    }
+
+    public void MarkCompleted()
+    {
+        Status = CompletedStatus;
     }
 
     private static List<LearningPlanWeeklyGoal> BuildWeeklyGoals(

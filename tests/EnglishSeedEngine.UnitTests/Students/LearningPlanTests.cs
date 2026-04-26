@@ -33,6 +33,58 @@ public sealed class LearningPlanTests
     }
 
     [Theory]
+    [InlineData(0, 1, "Easy")]
+    [InlineData(1, 2, "Medium")]
+    [InlineData(2, 3, "Medium")]
+    [InlineData(3, 4, "Hard")]
+    public void GetNextLessonDraft_ReturnsExpectedWeekAndDifficulty(
+        int existingLessons,
+        int expectedWeek,
+        string expectedDifficulty)
+    {
+        var plan = LearningPlan.Create(
+            Guid.NewGuid(),
+            "A2",
+            "B1",
+            DateTime.UtcNow);
+
+        var draft = plan.GetNextLessonDraft(existingLessons);
+
+        draft.WeekNumber.Should().Be(expectedWeek);
+        draft.TargetDifficulty.Should().Be(expectedDifficulty);
+        draft.WeeklyFocus.Should().NotBeNullOrWhiteSpace();
+    }
+
+    [Fact]
+    public void GetNextLessonDraft_WhenPlanIsCompleted_ThrowsInvalidOperationException()
+    {
+        var plan = LearningPlan.Create(
+            Guid.NewGuid(),
+            "A2",
+            "B1",
+            DateTime.UtcNow);
+        plan.MarkCompleted();
+
+        var action = () => plan.GetNextLessonDraft(0);
+
+        action.Should().Throw<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void GetNextLessonDraft_WhenAllLessonsAlreadyGenerated_ThrowsInvalidOperationException()
+    {
+        var plan = LearningPlan.Create(
+            Guid.NewGuid(),
+            "A2",
+            "B1",
+            DateTime.UtcNow);
+
+        var action = () => plan.GetNextLessonDraft(4);
+
+        action.Should().Throw<InvalidOperationException>();
+    }
+
+    [Theory]
     [InlineData("")]
     [InlineData("   ")]
     public void Create_WithInvalidStartLevel_ThrowsArgumentException(string invalidStartLevel)
