@@ -86,6 +86,7 @@ public sealed class Student
         InitialAssessmentTotalQuestions = totalQuestions;
         InitialAssessmentScorePercentage = InitialAssessmentScoring.CalculateScorePercentage(correctAnswers, totalQuestions);
         InitialAssessmentLevel = level.Trim().ToUpperInvariant();
-        InitialAssessmentCompletedAtUtc = completedAtUtc;
+        var truncatedTicks = completedAtUtc.Ticks - (completedAtUtc.Ticks % TimeSpan.TicksPerMicrosecond);
+        InitialAssessmentCompletedAtUtc = new DateTime(truncatedTicks, DateTimeKind.Utc);
     }
 }
