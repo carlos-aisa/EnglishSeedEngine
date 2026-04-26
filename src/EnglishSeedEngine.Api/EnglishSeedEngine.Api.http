@@ -61,3 +61,34 @@ GET {{EnglishSeedEngine.Api_HostAddress}}/lessons/{{lessonId}}/materials
 Accept: application/json
 
 ###
+
+POST {{EnglishSeedEngine.Api_HostAddress}}/practice-sessions
+Content-Type: application/json
+
+{
+  "lessonId": "{{lessonId}}"
+}
+
+###
+
+POST {{EnglishSeedEngine.Api_HostAddress}}/practice-sessions/00000000-0000-0000-0000-000000000004/answers
+Content-Type: application/json
+
+{
+  "answers": [
+    { "exerciseIndex": 1, "answer": "review" },
+    { "exerciseIndex": 2, "answer": "This week I practice speaking." },
+    { "exerciseIndex": 3, "answer": "Speaking builds confidence every day." }
+  ]
+}
+
+###
+
+POST {{EnglishSeedEngine.Api_HostAddress}}/practice-sessions/00000000-0000-0000-0000-000000000004:finish
+
+###
+
+GET {{EnglishSeedEngine.Api_HostAddress}}/practice-sessions/00000000-0000-0000-0000-000000000004/result
+Accept: application/json
+
+###
