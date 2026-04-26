@@ -1,5 +1,6 @@
 using EnglishSeedEngine.Domain.LearningPlans;
 using EnglishSeedEngine.Domain.Lessons;
+using EnglishSeedEngine.Domain.PracticeSessions;
 using EnglishSeedEngine.Domain.Students;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,8 @@ public sealed class AppDbContext : DbContext
     public DbSet<Lesson> Lessons => Set<Lesson>();
 
     public DbSet<LessonMaterial> LessonMaterials => Set<LessonMaterial>();
+
+    public DbSet<PracticeSession> PracticeSessions => Set<PracticeSession>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -76,5 +79,17 @@ public sealed class AppDbContext : DbContext
         lessonMaterial.Property(x => x.GeneratedAtUtc).IsRequired();
         lessonMaterial.HasIndex(x => x.LessonId);
         lessonMaterial.HasIndex(x => new { x.LessonId, x.Version }).IsUnique();
+
+        var practiceSession = modelBuilder.Entity<PracticeSession>();
+        practiceSession.ToTable("practice_sessions");
+        practiceSession.HasKey(x => x.Id);
+        practiceSession.Property(x => x.LessonId).IsRequired();
+        practiceSession.Property(x => x.Status).HasMaxLength(24).IsRequired();
+        practiceSession.Property(x => x.ExercisesJson).HasColumnType("jsonb").IsRequired();
+        practiceSession.Property(x => x.ScorePercentage);
+        practiceSession.Property(x => x.WeakPointsJson).HasColumnType("jsonb").IsRequired();
+        practiceSession.Property(x => x.CreatedAtUtc).IsRequired();
+        practiceSession.Property(x => x.FinishedAtUtc);
+        practiceSession.HasIndex(x => x.LessonId);
     }
 }

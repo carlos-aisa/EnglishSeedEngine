@@ -1,6 +1,7 @@
 using EnglishSeedEngine.Application.LearningPlans;
 using EnglishSeedEngine.Application.LessonMaterials;
 using EnglishSeedEngine.Application.Lessons;
+using EnglishSeedEngine.Application.PracticeSessions;
 using EnglishSeedEngine.Application.Students;
 using EnglishSeedEngine.Infrastructure;
 using EnglishSeedEngine.Infrastructure.Persistence;
@@ -16,6 +17,7 @@ builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<ILearningPlanService, LearningPlanService>();
 builder.Services.AddScoped<ILessonMaterialService, LessonMaterialService>();
 builder.Services.AddScoped<ILessonService, LessonService>();
+builder.Services.AddScoped<IPracticeSessionService, PracticeSessionService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddInfrastructure(builder.Configuration);
 

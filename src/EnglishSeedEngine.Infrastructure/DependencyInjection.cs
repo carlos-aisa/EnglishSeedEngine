@@ -1,6 +1,7 @@
 using EnglishSeedEngine.Application.LearningPlans;
 using EnglishSeedEngine.Application.LessonMaterials;
 using EnglishSeedEngine.Application.Lessons;
+using EnglishSeedEngine.Application.PracticeSessions;
 using EnglishSeedEngine.Application.Students;
 using EnglishSeedEngine.Infrastructure.LessonMaterials;
 using EnglishSeedEngine.Infrastructure.Persistence;
@@ -28,6 +29,7 @@ public static class DependencyInjection
         services.AddScoped<ILessonRepository, LessonRepository>();
         services.AddScoped<ILessonMaterialRepository, LessonMaterialRepository>();
         services.AddScoped<ILessonMaterialGenerator, TemplateLessonMaterialGenerator>();
+        services.AddScoped<IPracticeSessionRepository, PracticeSessionRepository>();
 
         return services;
     }
