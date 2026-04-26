@@ -44,6 +44,28 @@ public sealed class StudentsController : ControllerBase
         }
     }
 
+    [HttpPost("{id:guid}/assessments/initial")]
+    public async Task<IActionResult> SubmitInitialAssessment(
+        [FromRoute] Guid id,
+        [FromBody] SubmitInitialAssessmentRequest request,
+        CancellationToken cancellationToken)
+    {
+        var student = await _studentService.SubmitInitialAssessmentAsync(
+            id,
+            new SubmitInitialAssessmentInput(request.CorrectAnswers, request.TotalQuestions),
+            cancellationToken);
+
+        if (student is null)
+        {
+            return NotFound();
+        }
+
+        return CreatedAtRoute(
+            RouteNames.GetStudentLevel,
+            new { id = student.Id },
+            ToLevelResponse(student));
+    }
+
     [HttpGet("{id:guid}", Name = RouteNames.GetStudentById)]
     public async Task<IActionResult> GetStudentById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
@@ -57,6 +79,19 @@ public sealed class StudentsController : ControllerBase
         return Ok(ToResponse(student));
     }
 
+    [HttpGet("{id:guid}/level", Name = RouteNames.GetStudentLevel)]
+    public async Task<IActionResult> GetStudentLevel([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        var student = await _studentService.GetByIdAsync(id, cancellationToken);
+
+        if (student is null || !student.HasInitialAssessment)
+        {
+            return NotFound();
+        }
+
+        return Ok(ToLevelResponse(student));
+    }
+
     private static StudentResponse ToResponse(Domain.Students.Student student)
     {
         return new StudentResponse(
@@ -68,9 +103,21 @@ public sealed class StudentsController : ControllerBase
             student.CreatedAtUtc);
     }
 
+    private static StudentLevelResponse ToLevelResponse(Domain.Students.Student student)
+    {
+        return new StudentLevelResponse(
+            student.Id,
+            student.InitialAssessmentCorrectAnswers!.Value,
+            student.InitialAssessmentTotalQuestions!.Value,
+            student.InitialAssessmentScorePercentage!.Value,
+            student.InitialAssessmentLevel!,
+            student.InitialAssessmentCompletedAtUtc!.Value);
+    }
+
     private static class RouteNames
     {
         public const string GetStudentById = nameof(GetStudentById);
+
+        public const string GetStudentLevel = nameof(GetStudentLevel);
     }
 }
-

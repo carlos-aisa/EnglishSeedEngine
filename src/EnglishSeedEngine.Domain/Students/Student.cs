@@ -28,6 +28,18 @@ public sealed class Student
 
     public DateTime CreatedAtUtc { get; private set; }
 
+    public int? InitialAssessmentCorrectAnswers { get; private set; }
+
+    public int? InitialAssessmentTotalQuestions { get; private set; }
+
+    public int? InitialAssessmentScorePercentage { get; private set; }
+
+    public string? InitialAssessmentLevel { get; private set; }
+
+    public DateTime? InitialAssessmentCompletedAtUtc { get; private set; }
+
+    public bool HasInitialAssessment => InitialAssessmentLevel is not null;
+
     public static Student Create(string fullName, int age, string tutorEmail, string targetLevel, DateTime createdAtUtc)
     {
         if (string.IsNullOrWhiteSpace(fullName))
@@ -58,5 +70,23 @@ public sealed class Student
             targetLevel.Trim().ToUpperInvariant(),
             createdAtUtc);
     }
-}
 
+    public void RecordInitialAssessment(
+        int correctAnswers,
+        int totalQuestions,
+        string level,
+        DateTime completedAtUtc)
+    {
+        if (string.IsNullOrWhiteSpace(level))
+        {
+            throw new ArgumentException("Assessment level is required.", nameof(level));
+        }
+
+        InitialAssessmentCorrectAnswers = correctAnswers;
+        InitialAssessmentTotalQuestions = totalQuestions;
+        InitialAssessmentScorePercentage = InitialAssessmentScoring.CalculateScorePercentage(correctAnswers, totalQuestions);
+        InitialAssessmentLevel = level.Trim().ToUpperInvariant();
+        var truncatedTicks = completedAtUtc.Ticks - (completedAtUtc.Ticks % TimeSpan.TicksPerMicrosecond);
+        InitialAssessmentCompletedAtUtc = new DateTime(truncatedTicks, DateTimeKind.Utc);
+    }
+}

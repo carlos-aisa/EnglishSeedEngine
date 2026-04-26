@@ -1,4 +1,5 @@
 @EnglishSeedEngine.Api_HostAddress = http://localhost:5042
+@studentId = 00000000-0000-0000-0000-000000000001
 
 GET {{EnglishSeedEngine.Api_HostAddress}}/health
 Accept: application/json
@@ -14,5 +15,20 @@ Content-Type: application/json
   "tutorEmail": "parent.alice@example.com",
   "targetLevel": "A2"
 }
+
+###
+
+POST {{EnglishSeedEngine.Api_HostAddress}}/students/{{studentId}}/assessments/initial
+Content-Type: application/json
+
+{
+  "correctAnswers": 8,
+  "totalQuestions": 10
+}
+
+###
+
+GET {{EnglishSeedEngine.Api_HostAddress}}/students/{{studentId}}/level
+Accept: application/json
 
 ###

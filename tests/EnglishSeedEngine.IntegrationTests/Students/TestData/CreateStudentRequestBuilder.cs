@@ -1,6 +1,7 @@
 using EnglishSeedEngine.Api.Contracts.Students;
 
 namespace EnglishSeedEngine.IntegrationTests.Students.TestData;
+
 public sealed class CreateStudentRequestBuilder
 {
     private string _fullName = "Alice Carter";
