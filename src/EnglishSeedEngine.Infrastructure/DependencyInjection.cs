@@ -1,3 +1,4 @@
+using EnglishSeedEngine.Application.LearningPlans;
 using EnglishSeedEngine.Application.Students;
 using EnglishSeedEngine.Infrastructure.Persistence;
 using EnglishSeedEngine.Infrastructure.Persistence.Repositories;
@@ -20,8 +21,8 @@ public static class DependencyInjection
 
         services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
         services.AddScoped<IStudentRepository, StudentRepository>();
+        services.AddScoped<ILearningPlanRepository, LearningPlanRepository>();
 
         return services;
     }
 }
-
