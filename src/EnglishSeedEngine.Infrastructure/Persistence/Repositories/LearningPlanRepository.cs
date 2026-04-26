@@ -26,4 +26,11 @@ public sealed class LearningPlanRepository : ILearningPlanRepository
             .Include(x => x.WeeklyGoals)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
+
+    public async Task UpdateAsync(LearningPlan learningPlan, CancellationToken cancellationToken)
+    {
+        _dbContext.Attach(learningPlan);
+        _dbContext.Entry(learningPlan).Property(x => x.Status).IsModified = true;
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
 }

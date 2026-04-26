@@ -1,5 +1,6 @@
 using EnglishSeedEngine.Api.Contracts.LearningPlans;
 using EnglishSeedEngine.Application.LearningPlans;
+using EnglishSeedEngine.Application.Lessons;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnglishSeedEngine.Api.Controllers;
@@ -8,10 +9,14 @@ namespace EnglishSeedEngine.Api.Controllers;
 public sealed class LearningPlansController : ControllerBase
 {
     private readonly ILearningPlanService _learningPlanService;
+    private readonly ILessonService _lessonService;
 
-    public LearningPlansController(ILearningPlanService learningPlanService)
+    public LearningPlansController(
+        ILearningPlanService learningPlanService,
+        ILessonService lessonService)
     {
         _learningPlanService = learningPlanService;
+        _lessonService = lessonService;
     }
 
     [HttpPost("students/{id:guid}/learning-plans")]
@@ -53,6 +58,34 @@ public sealed class LearningPlansController : ControllerBase
         }
 
         return Ok(ToResponse(learningPlan));
+    }
+
+    [HttpPost("learning-plans/{id:guid}/lessons:next")]
+    public async Task<IActionResult> CreateNextLesson([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var lesson = await _lessonService.CreateNextAsync(id, cancellationToken);
+
+            if (lesson is null)
+            {
+                return NotFound();
+            }
+
+            return CreatedAtRoute(
+                LessonsController.RouteNames.GetLessonById,
+                new { id = lesson.Id },
+                LessonsController.ToResponse(lesson));
+        }
+        catch (LearningPlanCompletedException ex)
+        {
+            return Conflict(new ProblemDetails
+            {
+                Title = "Learning plan completed",
+                Detail = ex.Message,
+                Status = StatusCodes.Status409Conflict
+            });
+        }
     }
 
     private static LearningPlanResponse ToResponse(Domain.LearningPlans.LearningPlan learningPlan)

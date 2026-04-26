@@ -1,4 +1,5 @@
 using EnglishSeedEngine.Domain.LearningPlans;
+using EnglishSeedEngine.Domain.Lessons;
 using EnglishSeedEngine.Domain.Students;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,8 @@ public sealed class AppDbContext : DbContext
     public DbSet<Student> Students => Set<Student>();
 
     public DbSet<LearningPlan> LearningPlans => Set<LearningPlan>();
+
+    public DbSet<Lesson> Lessons => Set<Lesson>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -48,5 +51,16 @@ public sealed class AppDbContext : DbContext
         weeklyGoal.HasKey(x => x.Id);
         weeklyGoal.Property(x => x.WeekNumber).IsRequired();
         weeklyGoal.Property(x => x.Goal).HasMaxLength(300).IsRequired();
+
+        var lesson = modelBuilder.Entity<Lesson>();
+        lesson.ToTable("lessons");
+        lesson.HasKey(x => x.Id);
+        lesson.Property(x => x.LearningPlanId).IsRequired();
+        lesson.Property(x => x.WeekNumber).IsRequired();
+        lesson.Property(x => x.WeeklyFocus).HasMaxLength(300).IsRequired();
+        lesson.Property(x => x.TargetDifficulty).HasMaxLength(24).IsRequired();
+        lesson.Property(x => x.Status).HasMaxLength(24).IsRequired();
+        lesson.Property(x => x.CreatedAtUtc).IsRequired();
+        lesson.HasIndex(x => x.LearningPlanId);
     }
 }

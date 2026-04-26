@@ -8,6 +8,7 @@ Backend-first project for adaptive English learning focused on testing quality.
 - Student registration API.
 - Initial assessment and CEFR approximation endpoints.
 - Personalized 4-week learning plan endpoints.
+- Next lesson generation and lesson retrieval endpoints.
 - Health endpoint.
 - Integration tests with real PostgreSQL in Docker (`Testcontainers` + `Respawn`).
 
