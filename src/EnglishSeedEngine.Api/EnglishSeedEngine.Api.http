@@ -52,3 +52,12 @@ GET {{EnglishSeedEngine.Api_HostAddress}}/lessons/{{lessonId}}
 Accept: application/json
 
 ###
+
+POST {{EnglishSeedEngine.Api_HostAddress}}/lessons/{{lessonId}}/materials:generate
+
+###
+
+GET {{EnglishSeedEngine.Api_HostAddress}}/lessons/{{lessonId}}/materials
+Accept: application/json
+
+###

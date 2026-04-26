@@ -1,6 +1,8 @@
 using EnglishSeedEngine.Application.LearningPlans;
+using EnglishSeedEngine.Application.LessonMaterials;
 using EnglishSeedEngine.Application.Lessons;
 using EnglishSeedEngine.Application.Students;
+using EnglishSeedEngine.Infrastructure.LessonMaterials;
 using EnglishSeedEngine.Infrastructure.Persistence;
 using EnglishSeedEngine.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +26,8 @@ public static class DependencyInjection
         services.AddScoped<IStudentRepository, StudentRepository>();
         services.AddScoped<ILearningPlanRepository, LearningPlanRepository>();
         services.AddScoped<ILessonRepository, LessonRepository>();
+        services.AddScoped<ILessonMaterialRepository, LessonMaterialRepository>();
+        services.AddScoped<ILessonMaterialGenerator, TemplateLessonMaterialGenerator>();
 
         return services;
     }
