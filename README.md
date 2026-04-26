@@ -15,6 +15,7 @@ Backend-first project for adaptive English learning focused on testing quality.
 - New work should happen in feature branches and be merged through pull requests.
 - GitHub issues are the unit of planned work.
 - CI validates pushes to `main` and pull requests targeting `main`.
+- Testing strategy: [docs/testing/TESTING_STRATEGY.md](docs/testing/TESTING_STRATEGY.md)
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the branch naming convention and PR flow.
 
